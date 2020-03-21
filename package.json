@@ -1,0 +1,21 @@
+{
+  "name": "vaderapi",
+  "version": "1.0.0",
+  "description": "API project",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "ivashchvlad",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "helmet": "^3.21.2",
+    "joi": "^14.3.1",
+    "mongoose": "^5.8.7",
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.2"
+  }
+}
