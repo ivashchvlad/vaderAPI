@@ -1,7 +1,7 @@
 const express = require('express');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
-const { User, validation } = require('../models/usrModel');
+const { User, validation } = require('../../models/userModel');
 
 
 const router = express.Router();
@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const { error } = validation(req.body);
+    const { error } = await validation(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
     };
@@ -26,11 +26,11 @@ router.post('/', async (req, res) => {
         email: req.body.email,
         password: req.body.password, 
     });
-
-    const salt = await bcrypt.getSalt(10);
-    user.password = bcrypt.hash(user.password, );
-
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
     await user.save();
 
-    res.send(_.pick(user, ['_id', 'name', 'email']));
+    res.header('x-auth-token', user.generateAuthToken()).send(_.pick(user, ['_id', 'name', 'email']));
 });
+
+module.exports = router;

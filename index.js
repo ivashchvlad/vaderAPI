@@ -3,11 +3,19 @@ var express = require('express');
 const mongoose = require('mongoose');
 var helmet = require('helmet');
 var morgan = require('morgan');
+var config = require('config');
 var mainDebuger = require('debug')('app:main');
 
 const enemiesRoute = require('./routes/enemyRoute');
+const userRoute = require('./routes/auth/userRoute');
+const authRoute = require('./routes/auth/authRoute');
 
 var app = express();
+
+if(!config.get("jwtPrivateKey")) {
+    console.error("FATAL ERROR: jwtPrivateKey is not defined")
+    process.exit(1);
+}
 
 mongoose.connect('mongodb://localhost', {
     useNewUrlParser: true,
@@ -34,6 +42,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/enemies', enemiesRoute);
+app.use('/user', userRoute);
+app.use('/auth', authRoute);
 
 app.get('/vader', (req, res) => {
     res.send('PSHHHHH........Poooooohhh');
