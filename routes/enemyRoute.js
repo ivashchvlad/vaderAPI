@@ -1,4 +1,6 @@
 const express = require('express');
+const authMiddleware = require('../middleware/authMid');
+const adminMiddleware = require('../middleware/adminMid');
 const { Enemy, validation } = require('../models/enemyModel');
 
 
@@ -9,13 +11,14 @@ router.get('/', async (req, res) => {
     return res.send(enemy);
 });
 
-router.post('/', (req, res) => {
+router.post('/', authMiddleware, async (req, res) => {
     const result = validation(req.body);
     if (result.error) {
         return res.status(400).send(result.error.details[0].message);
     }
     let enemy = new Enemy({ name: req.body.name });
-    enemy.save().then(enemy => res.send(enemy))
+    const savedenemy = await enemy.save();
+    return res.send(savedenemy);
 });
 
 router.put('/:id', (req, res) => {
@@ -31,7 +34,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', [authMiddleware, adminMiddleware], (req, res) => {
     Enemy.findByIdAndRemove(req.params.id).then(enemy => {
         if (!enemy) return res.status(404).send('this enemy already nonexisting');
         res.send(enemy);
