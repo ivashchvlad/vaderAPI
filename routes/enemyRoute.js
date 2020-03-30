@@ -1,12 +1,16 @@
 const express = require('express');
 const authMiddleware = require('../middleware/authMid');
 const adminMiddleware = require('../middleware/adminMid');
+const asyncMiddleware = require('../middleware/asyncMid');
 const { Enemy, validation } = require('../models/enemyModel');
 
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+
+
+
+router.get('/', async(req, res) => {
     const enemy = await Enemy.find().sort('name');
     return res.send(enemy);
 });
