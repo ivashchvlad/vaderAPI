@@ -9,6 +9,8 @@ require('./configCheck')();
 
 const SYS_PORT = process.env.PORT || 3000;
 
-app.listen(SYS_PORT, () => {
+const server = app.listen(SYS_PORT, () => {
     console.log(`Listening on port ${SYS_PORT}...`);
 });
+
+module.exports = server;

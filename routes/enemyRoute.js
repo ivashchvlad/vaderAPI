@@ -1,7 +1,6 @@
 const express = require('express');
 const authMiddleware = require('../middleware/authMid');
 const adminMiddleware = require('../middleware/adminMid');
-const asyncMiddleware = require('../middleware/asyncMid');
 const { Enemy, validation } = require('../models/enemyModel');
 
 

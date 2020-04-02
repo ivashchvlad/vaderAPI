@@ -1,8 +1,9 @@
-const winston = require('winston');
 const mongoose = require('mongoose');
+const winston = require('winston');
+const config = require('config');
 
 module.exports = () => {
-    mongoose.connect('mongodb://localhost', {
+    mongoose.connect(config.get('db'), {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     }).then(() => {
