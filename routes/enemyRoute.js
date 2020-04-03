@@ -1,13 +1,10 @@
 const express = require('express');
 const authMiddleware = require('../middleware/authMid');
 const adminMiddleware = require('../middleware/adminMid');
+const validateObjectId = require('../middleware/validateObjectId');
 const { Enemy, validation } = require('../models/enemyModel');
 
-
 const router = express.Router();
-
-
-
 
 router.get('/', async(req, res) => {
     const enemy = await Enemy.find().sort('name');
@@ -44,7 +41,7 @@ router.delete('/:id', [authMiddleware, adminMiddleware], (req, res) => {
     })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateObjectId, (req, res) => {
     return Enemy.findById(req.params.id).then(enemy => {
         if (!enemy) return res.status(404).send('this enemy already nonexisting');
         res.send(`VADER MURDERED ENEMY ${enemy.name}`);
